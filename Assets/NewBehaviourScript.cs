@@ -7,7 +7,7 @@ using System.Linq;
 public class NewBehaviourScript : MonoBehaviour { 
 
 	/// The current Player the Spawner is spawning creatures for
-	public Player player { get; set; }
+	public GameObject player { get; set; }
 
 	// The max bounds of the spawning area
 	public Rect SpawnArea { get; set; }
@@ -22,9 +22,11 @@ public class NewBehaviourScript : MonoBehaviour {
 		Density = 100;
 		SpawnArea = new Rect (0, 0, Screen.width, Screen.height);
 		SpawnClearArea = new Rect (0, 0, Screen.width / 2, Screen.height / 2);
+		player = GameObject.Find ("Cell");
 		InstanceTypes = new GameObject[] { 
-			GameObject.FindGameObjectWithTag("Player")
+			player
 		};
+		Debug.LogWarning ("asdfa");
 		StartCoroutine(dostuff());
 	}
 
@@ -34,10 +36,10 @@ public class NewBehaviourScript : MonoBehaviour {
 		var creature = Instantiate (InstanceTypes [rand.Next() % InstanceTypes.Length]);
 		creature.tag = "creature";
 		creature.transform.position = player.transform.position + new Vector3(
-			(float)rand.NextDouble () * (float)SpawnArea.width,
-			(float)rand.NextDouble () * (float)SpawnArea.height,
+			(float)rand.NextDouble () * (float)SpawnArea.width - SpawnArea.width / 2,
+			(float)rand.NextDouble () * (float)SpawnArea.height - SpawnArea.height / 2,
 			0);
-		Debug.LogWarning (creature.transform.position);		
+		Debug.LogWarning (new { Creature = creature.transform.position });		
 		return creature;
 	}
 
@@ -50,7 +52,7 @@ public class NewBehaviourScript : MonoBehaviour {
 			for (int i = GameObject.FindGameObjectsWithTag ("creature").Length; i < Density; i++)
 				CreateCreature ();
 
-			Debug.LogWarning (player.transform.position);
+			Debug.LogWarning (new { Player = player.transform.position });
 			yield return 0;
 		}
 	}
