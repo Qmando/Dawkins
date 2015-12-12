@@ -20,11 +20,11 @@ public class NewBehaviourScript : MonoBehaviour {
 
 	void Start() { 
 		Density = 100;
-		SpawnArea = new Rect (0, 0, Screen.width, Screen.height);
-		SpawnClearArea = new Rect (0, 0, Screen.width / 2, Screen.height / 2);
+		SpawnArea = new Rect (0, 0, 5.0f, 5.0f);
+		SpawnClearArea = new Rect (0, 0, 5.0f / 2, 5.0f / 2);
 		player = GameObject.Find ("Cell");
 		InstanceTypes = new GameObject[] { 
-			player
+			GameObject.Find("flagella")
 		};
 		Debug.LogWarning ("asdfa");
 		StartCoroutine(dostuff());
