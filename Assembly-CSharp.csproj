@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Camera.cs" />
+     <Compile Include="Assets\Component.cs" />
      <Compile Include="Assets\Game.cs" />
      <Compile Include="Assets\Player.cs" />
  <Reference Include="UnityEngine.UI">
