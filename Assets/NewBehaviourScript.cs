@@ -35,7 +35,7 @@ public class NewBehaviourScript : MonoBehaviour {
 		
 	GameObject CreateCreature(bool avoidNearby = true) { 
 		var creature = Instantiate (InstanceTypes [rand.Next() % InstanceTypes.Length]);
-		creature.tag = "creature";
+		creature.tag = "component";
 		creature.transform.Rotate (Vector3.forward, (float)rand.NextDouble () * 360);
 		creature.transform.position = player.transform.position + genOffset (avoidNearby);
 		Debug.LogWarning (new { Creature = creature.transform.position });		
@@ -58,11 +58,11 @@ public class NewBehaviourScript : MonoBehaviour {
 			CreateCreature (false);
 
 		while (true) { 
-			for (int i = GameObject.FindGameObjectsWithTag ("creature").Length; i < Density; i++)
+			for (int i = GameObject.FindGameObjectsWithTag ("component").Length; i < Density; i++)
 				CreateCreature ();
 
 			var to_delete = 
-				from x in GameObject.FindGameObjectsWithTag ("creature")
+				from x in GameObject.FindGameObjectsWithTag ("component")
 				where Vector3.Distance (x.transform.position, player.transform.position) > 15
 				select x;
 
