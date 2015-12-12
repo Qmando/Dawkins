@@ -1,44 +1,37 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using System.Collections;
-using System;
+﻿using System;
+using UnityEngine;
 using System.Linq;
+using System.Collections;
 
-public class NewBehaviourScript : MonoBehaviour { 
-
+public class DoodadSpawner : MonoBehaviour
+{
 	/// The current Player the Spawner is spawning creatures for
 	public GameObject player { get; set; }
 
+	public float SpawnRadius = 40.0f;
 	// The max bounds of the spawning area
 	public Rect SpawnArea { get; set; }
 	// The minimum distance to spawn from -- this prevents spawning too closely
 	public Rect SpawnClearArea { get; set; }
 
-	public int Density { get; set;}
-
-	public GameObject[] InstanceTypes { get; set; }
+	public int Density = 20;
+	public GameObject[] InstanceTypes; 
 
 	void Start() { 
-		Density = 20;
-		var w = 40.0f;
+		var w = SpawnRadius;
 		SpawnArea = new Rect (-w / 2, -w / 2, w, w);
 		SpawnClearArea = new Rect (SpawnArea.xMin / 2, SpawnArea.yMin / 2, SpawnArea.width / 2, SpawnArea.height / 2);
 		player = GameObject.Find ("Cell");
-		InstanceTypes = new GameObject[] { 
-			GameObject.Find("flagella")
-		};
-		Debug.LogWarning ("asdfa");
 		StartCoroutine(dostuff());
 	}
 
 	System.Random rand = new System.Random();
-		
+
 	GameObject CreateCreature(bool avoidNearby = true) { 
 		var creature = Instantiate (InstanceTypes [rand.Next() % InstanceTypes.Length]);
 		creature.tag = "creature";
 		creature.transform.Rotate (Vector3.forward, (float)rand.NextDouble () * 360);
 		creature.transform.position = player.transform.position + genOffset (avoidNearby);
-		Debug.LogWarning (new { Creature = creature.transform.position });		
 		return creature;
 	}
 
@@ -73,3 +66,5 @@ public class NewBehaviourScript : MonoBehaviour {
 		}
 	}
 }
+
+
