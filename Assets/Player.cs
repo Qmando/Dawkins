@@ -6,7 +6,7 @@ public class Player : MonoBehaviour {
 	public float speed;
 	// Use this for initialization
 	void Start () {
-	
+		
 	}
 
 	Vector2 mouseOffset () {
@@ -22,6 +22,5 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Move ();
-		
 	}
 }
