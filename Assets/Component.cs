@@ -21,5 +21,8 @@ public class Component : MonoBehaviour {
 		isAttached = true;
 		attachedTo = player;
 		attachOffset = this.transform.position - player.transform.position;
+
+		// Set layer to "player" to avoid colliding with itself
+		this.gameObject.layer = 8;
 	}
 }
