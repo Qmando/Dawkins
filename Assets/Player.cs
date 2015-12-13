@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
 
 	}
 
-	Vector2 mouseOffset () {
+	public static Vector2 mouseOffset () {
 		float x = Input.mousePosition.x - Screen.width/2;
 		float y = Input.mousePosition.y - Screen.height/2;
 		return new Vector2 (x, y);

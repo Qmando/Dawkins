@@ -5,8 +5,12 @@ public class Component : MonoBehaviour {
 	private GameObject attachedTo = null;
 	private bool isAttached = false;
 	private Vector3 attachOffset;
+	Animator anim;
 	// Use this for initialization
-	void Start () {
+	void Awake () {
+		// Turn off animation on spawn
+		anim = this.GetComponentsInChildren<Animator>()[0];
+		anim.enabled = false;
 	
 	}
 	
@@ -14,6 +18,22 @@ public class Component : MonoBehaviour {
 	void Update () {
 		if (isAttached) {
 			this.transform.position = attachedTo.transform.position + attachOffset;
+		
+
+			// Flagella, to be refactored
+			Vector2 movement = Player.mouseOffset();
+			float zRot = this.transform.rotation.eulerAngles.z;
+			zRot += 90;
+			zRot *= Mathf.Deg2Rad;
+			Vector3 direction = transform.rotation * transform.up;
+			Vector2 dir = new Vector2 (Mathf.Cos (zRot), Mathf.Sin (zRot));
+			Vector3 heading = new Vector2 (movement.x, movement.y).normalized;
+			float offset = Vector3.Dot (heading, dir);
+			if (offset > .5) {
+				anim.enabled = true;
+			} else {
+				anim.enabled = false;
+			}
 		}
 	}
 

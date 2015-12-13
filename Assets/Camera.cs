@@ -10,6 +10,6 @@ public class Camera : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		this.transform.position = follow.position + new Vector3 (0, 0, -10);
+		this.transform.position = follow.position + new Vector3 (0, 0, -15);
 	}
 }
