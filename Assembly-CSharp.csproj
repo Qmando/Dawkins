@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{D10298F0-7F01-D98A-4D88-906B29E830EA}</ProjectGuid>
+    <ProjectGuid>{02F2F015-D7BA-0C3C-94E5-5A6014F40EAD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -45,8 +45,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Behaviors\Chase.cs" />
      <Compile Include="Assets\Behaviors\WanderRandomly.cs" />
-     <Compile Include="Assets\Camera.cs" />
+     <Compile Include="Assets\Behaviors\Wiggle.cs" />
+     <Compile Include="Assets\CameraControl.cs" />
      <Compile Include="Assets\Component.cs" />
      <Compile Include="Assets\Flagella.cs" />
      <Compile Include="Assets\Game.cs" />

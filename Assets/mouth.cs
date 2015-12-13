@@ -21,8 +21,6 @@ public class mouth : Component {
 				meleeAttacking = false;
 			}
 		}
-
-	
 	}
 
 	public override void attach (GameObject player)
