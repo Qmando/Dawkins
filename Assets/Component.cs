@@ -17,7 +17,6 @@ public class Component : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (isAttached) {
-			//this.transform.position = attachedTo.transform.position + attachOffset;
 		
 
 			// Flagella, to be refactored
@@ -43,6 +42,7 @@ public class Component : MonoBehaviour {
 		isAttached = true;
 		attachedTo = player;
 		attachOffset = this.transform.position - player.transform.position;
+		GetComponent<Rigidbody2D> ().isKinematic = true;
 
 
 		// Set layer to "player" to avoid colliding with itself
