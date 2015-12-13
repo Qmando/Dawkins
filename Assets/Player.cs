@@ -48,6 +48,7 @@ public class Player : MonoBehaviour {
 		angle *= 10 * Time.deltaTime;
 
 		body.Rotate (new Vector3 (0, 0, angle));
+
 		//Quaternion targetRot = new Quaternion (0, 0, angle, 0);
 		//body.rotation = Quaternion.Slerp(body.rotation, targetRot, Time.deltaTime * 1);
 	
@@ -77,6 +78,7 @@ public class Player : MonoBehaviour {
 				if (playerCollider.IsTouching (componentCollider)) {
 					component.SendMessage ("attach", this.gameObject);
 					this.attachedComponents.Add (component);
+					component.transform.SetParent (this.transform);
 				}
 			}
 		}

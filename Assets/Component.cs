@@ -17,7 +17,7 @@ public class Component : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (isAttached) {
-			this.transform.position = attachedTo.transform.position + attachOffset;
+			//this.transform.position = attachedTo.transform.position + attachOffset;
 		
 
 			// Flagella, to be refactored
@@ -43,6 +43,7 @@ public class Component : MonoBehaviour {
 		isAttached = true;
 		attachedTo = player;
 		attachOffset = this.transform.position - player.transform.position;
+
 
 		// Set layer to "player" to avoid colliding with itself
 		this.gameObject.layer = 8;
