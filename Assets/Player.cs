@@ -82,25 +82,31 @@ public class Player : MonoBehaviour {
 
 		// Left click, attach component
 		if (Input.GetMouseButtonDown (0)) {
+	
 
 			var colliders = 
 				from component in GameObject.FindGameObjectsWithTag ("component")
 				from collider in component.GetComponentsInChildren<Collider2D> ()
-				where collider.isTrigger && !this.attachedComponents.Contains(component)
+					where collider.isTrigger && !this.attachedComponents.Contains(component) && collider.gameObject.name.Contains("attachCollider") && !component.name.Contains("attachCollider") && component.layer != 8
 				select new { Object = component, Collider = collider};
 
 			var bodyParts = 
 				from part in attachedComponents
-				where part.name == "bodyCell"
+				where part.name.Contains("bodyCell")
 				from component in part.GetComponentsInChildren<Collider2D> ()
 				select component;
 
-			foreach (var bodypart in bodyParts.Concat(new[] { this.GetComponent<Collider2D>() }))
+			foreach (var bodypart in bodyParts.Concat(new[] { this.GetComponent<Collider2D>() }).ToArray())
 				foreach (var colliderInfo in colliders) 
 					if (bodypart.IsTouching(colliderInfo.Collider)) { 
-						colliderInfo.Object.SendMessage ("attach", this.gameObject);
-						this.attachedComponents.Add (colliderInfo.Object);
-						colliderInfo.Object.transform.SetParent (this.transform);
+						// If attaching to bodyCell, use it's object, not the attachCollider
+						GameObject obj = colliderInfo.Object;
+						if (colliderInfo.Object.name.Contains ("attachCollider")) {
+							obj = colliderInfo.Object.transform.parent.gameObject;
+						}
+						obj.SendMessage ("attach", bodypart.gameObject);
+						this.attachedComponents.Add (obj);
+						obj.transform.SetParent (this.transform);
 					}	
 		}
 	}

@@ -28,12 +28,19 @@ public class mouth : Component {
 	public override void attach (GameObject player)
 	{
 		var dir = transform.position - player.transform.position;
+		dir.z = 0;
 
 		// always point outwards
+		float moveAngle = Vector3.Angle(transform.rotation * Vector3.right, dir.normalized);
+		Debug.Log (Vector3.Cross (transform.rotation * Vector3.right, dir.normalized));
+		if (Vector3.Cross (transform.rotation * Vector3.right, dir.normalized).y > 0) {
+			moveAngle = -moveAngle;
+		}
+
 		transform.RotateAround (
 			transform.position,
 			Vector3.forward,
-			Vector3.Angle(transform.localRotation * Vector3.right, dir.normalized)
+			moveAngle
 		);
 
 		// fixed radius

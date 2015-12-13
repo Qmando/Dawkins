@@ -17,6 +17,8 @@ public class DoodadSpawner : MonoBehaviour
 	public int Density = 20;
 	public GameObject[] InstanceTypes;
 
+	public bool RespawnOnAttach = true;
+
 	void Start() {
 		var w = SpawnRadius;
 		SpawnArea = new Rect (-w / 2, -w / 2, w, w);
@@ -49,7 +51,14 @@ public class DoodadSpawner : MonoBehaviour
 			CreateCreature (false);
 
 		while (true) {
-			for (int i = GameObject.FindGameObjectsWithTag (doodadTag).Length; i < Density; i++)
+			int alive = 0;
+			GameObject[] allObjects = GameObject.FindGameObjectsWithTag (doodadTag);
+			foreach (GameObject obj in allObjects) {
+				if (obj.layer != 8 || !RespawnOnAttach) {
+					alive += 1;
+				}
+			}
+			for (int i = alive; i < Density; i++)
 				CreateCreature ();
 
 			var to_delete =

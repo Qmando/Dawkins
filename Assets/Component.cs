@@ -10,12 +10,14 @@ public class Component : MonoBehaviour {
 	protected bool meleeAttacking = false;
 	protected float attackSpeed = .5f;
 	protected float nextMeleeAttack = 0f;
+	protected GameObject eventObj;
 	// Use this for initialization
 	void Awake () {
 		// Turn off animation on spawn
 		anim = this.GetComponentsInChildren<Animator>().FirstOrDefault();
 		if (anim != null)
 			anim.enabled = false;
+		eventObj = GameObject.Find ("EventSystem");
 	
 	}
 	
@@ -26,7 +28,7 @@ public class Component : MonoBehaviour {
 			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("creature")) {
 				if (this.GetComponent<CircleCollider2D> ().IsTouching (enemy.GetComponent<Collider2D> ())) {
 					GameObject.Destroy (enemy);
-					attachedTo.SendMessage ("setscore");
+					eventObj.SendMessage ("setscore");
 				}
 			}
 		}
@@ -40,6 +42,7 @@ public class Component : MonoBehaviour {
 
 		// Set layer to "player" to avoid colliding with itself
 		this.gameObject.layer = 8;
+		this.gameObject.transform.GetChild (0).gameObject.layer = 8;
 	}
 }
 	

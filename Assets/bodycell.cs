@@ -3,14 +3,19 @@ using System.Collections;
 
 public class bodycell : Component {
 
-	// Use this for initialization
-	void Start () {
-	
+
+
+	void attach (GameObject x) {
+		GameObject.Find ("Camera").SendMessage ("zoomOut");
+		base.attach (x);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	void addSpeed () {
+		this.attachedTo.SendMessage ("addSpeed");
+	}
+
+	void decreaseSpeed () {
+		this.attachedTo.SendMessage ("decreaseSpeed");
 	}
 		
 }
