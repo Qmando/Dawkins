@@ -21,5 +21,25 @@ public class mouth : Component {
 				meleeAttacking = false;
 			}
 		}
+
+		this.transform.RotateAround (this.transform.position,
+			Vector3.forward,
+			1 * Time.deltaTime);
+	}
+
+	public override void attach (GameObject player)
+	{
+		var dir = transform.position - player.transform.position;
+
+		// always point outwards
+		transform.RotateAround (
+			transform.position,
+			Vector3.forward,
+			Vector3.Angle(transform.localRotation * Vector3.right, dir.normalized)
+		);
+
+		// fixed radius
+		transform.position = player.transform.position + dir.normalized * 2.5f;
+		base.attach (player);
 	}
 }

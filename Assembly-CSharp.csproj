@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{02F2F015-D7BA-0C3C-94E5-5A6014F40EAD}</ProjectGuid>
+    <ProjectGuid>{D10298F0-7F01-D98A-4D88-906B29E830EA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -48,9 +48,13 @@
      <Compile Include="Assets\Behaviors\WanderRandomly.cs" />
      <Compile Include="Assets\Camera.cs" />
      <Compile Include="Assets\Component.cs" />
+     <Compile Include="Assets\Flagella.cs" />
      <Compile Include="Assets\Game.cs" />
      <Compile Include="Assets\Player.cs" />
      <Compile Include="Assets\Spawners\DoodadSpawner.cs" />
+     <Compile Include="Assets\bodycell.cs" />
+     <Compile Include="Assets\mouth.cs" />
+     <Compile Include="Assets\scoregui.cs" />
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>

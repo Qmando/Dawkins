@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections;
 
 public class Component : MonoBehaviour {
@@ -12,8 +13,9 @@ public class Component : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		// Turn off animation on spawn
-		anim = this.GetComponentsInChildren<Animator>()[0];
-		anim.enabled = false;
+		anim = this.GetComponentsInChildren<Animator>().FirstOrDefault();
+		if (anim != null)
+			anim.enabled = false;
 	
 	}
 	
@@ -30,14 +32,14 @@ public class Component : MonoBehaviour {
 		}
 	}
 
-	void attach(GameObject player) {
+	public virtual void attach(GameObject player) {
 		isAttached = true;
 		attachedTo = player;
 		attachOffset = this.transform.position - player.transform.position;
 		GetComponent<Rigidbody2D> ().isKinematic = true;
 
-
 		// Set layer to "player" to avoid colliding with itself
 		this.gameObject.layer = 8;
 	}
 }
+	

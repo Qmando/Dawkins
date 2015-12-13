@@ -80,28 +80,26 @@ public class Player : MonoBehaviour {
 
 		// Left click, attach component
 		if (Input.GetMouseButtonDown (0)) {
-			// Cycle through "component" objects, check for Collider2D collisions
-			GameObject[] components = GameObject.FindGameObjectsWithTag ("component");
-			Collider2D playerCollider = this.GetComponent<Collider2D> ();
-			List<Collider2D> bodyParts = (from part in this.attachedComponents
-			                         where part.name == "bodyCell"
-									select part.GetComponentInChildren<Collider2D> () ).ToList<Collider2D>();
-			bodyParts.Add (playerCollider);
-			foreach (GameObject component in components) {
-				foreach (Collider2D componentCollider in component.GetComponentsInChildren<Collider2D> ()) {
-					if (!componentCollider.isTrigger) {
-						continue;
-					}
-					foreach (Collider2D bodyCollider in bodyParts) {
-						if (bodyCollider.IsTouching (componentCollider)) {
-							component.SendMessage ("attach", this.gameObject);
-							this.attachedComponents.Add (component);
-							component.transform.SetParent (this.transform);
-							break;
-						}
-					}
-				}
-			}
+
+			var colliders = 
+				from component in GameObject.FindGameObjectsWithTag ("component")
+				from collider in component.GetComponentsInChildren<Collider2D> ()
+				where collider.isTrigger
+				select new { Object = component, Collider = collider};
+
+			var bodyParts = 
+				from part in attachedComponents
+				where part.name == "bodyCell"
+				from component in part.GetComponentsInChildren<Collider2D> ()
+				select component;
+
+			foreach (var bodypart in bodyParts.Concat(new[] { this.GetComponent<Collider2D>() }))
+				foreach (var colliderInfo in colliders) 
+					if (bodypart.IsTouching(colliderInfo.Collider)) { 
+						colliderInfo.Object.SendMessage ("attach", this.gameObject);
+						this.attachedComponents.Add (colliderInfo.Object);
+						colliderInfo.Object.transform.SetParent (this.transform);
+					}	
 		}
 	}
 
