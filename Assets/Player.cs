@@ -27,27 +27,28 @@ public class Player : MonoBehaviour {
 
 		// If mouse is away from center
 		Vector2 mouse = mouseOffset();
-		float angle = Vector2.Angle (Vector2.right, mouseOffset ().normalized);
-		if (mouse.y < 0) {
-			angle = 360 - angle;
-		}
-		Vector3 rot = body.rotation.eulerAngles;
-		angle = angle - rot.z;
-		if (angle > 180) {
-			angle = angle - 360;
-		} else if (angle < -180) {
-			angle = angle + 360;
-		}
-		Debug.Log (angle);
-		if (angle < 0) {
-			angle = Mathf.Min (angle, 5f);
-		}
-		else {
-			angle = Mathf.Max (angle, -5f);
-		}
-		angle *= 10 * Time.deltaTime;
+		if (mouse.magnitude > 150) {
+			float angle = Vector2.Angle (Vector2.right, mouseOffset ().normalized);
+			if (mouse.y < 0) {
+				angle = 360 - angle;
+			}
+			Vector3 rot = body.rotation.eulerAngles;
+			angle = angle - rot.z;
+			if (angle > 180) {
+				angle = angle - 360;
+			} else if (angle < -180) {
+				angle = angle + 360;
+			}
+			Debug.Log (angle);
+			if (angle < 0) {
+				angle = Mathf.Min (angle, 5f);
+			} else {
+				angle = Mathf.Max (angle, -5f);
+			}
+			angle *= 10 * Time.deltaTime;
 
-		body.Rotate (new Vector3 (0, 0, angle));
+			body.Rotate (new Vector3 (0, 0, angle));
+		}
 
 		//Quaternion targetRot = new Quaternion (0, 0, angle, 0);
 		//body.rotation = Quaternion.Slerp(body.rotation, targetRot, Time.deltaTime * 1);
