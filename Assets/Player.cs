@@ -45,7 +45,7 @@ public class Player : MonoBehaviour {
 			} else {
 				angle = Mathf.Max (angle, -5f);
 			}
-			angle *= 10 * Time.deltaTime;
+			angle *= 1 * Time.deltaTime;
 
 			body.Rotate (new Vector3 (0, 0, angle));
 		}
