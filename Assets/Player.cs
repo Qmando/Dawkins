@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Player : MonoBehaviour {
 	
@@ -9,6 +10,7 @@ public class Player : MonoBehaviour {
 
 	public Transform body;
 	public float speed;
+	public float rotateSpeed;
 	private List<GameObject> attachedComponents = new List<GameObject>();
 
 	// Use this for initialization
@@ -50,7 +52,7 @@ public class Player : MonoBehaviour {
 			} else {
 				angle = Mathf.Max (angle, -5f);
 			}
-			angle *= Time.deltaTime;
+			angle *= rotateSpeed * Time.deltaTime;
 			body.Rotate (new Vector3 (0, 0, angle));
 		}
 
@@ -61,11 +63,13 @@ public class Player : MonoBehaviour {
 	}
 
 	void addSpeed() {
-		this.speed *= 1.2f;
+		this.speed += .3f;
+		this.rotateSpeed += .2f;
 	}
 
 	void decreaseSpeed() {
-		this.speed /= 1.2f;
+		this.speed -= .3f;
+		this.rotateSpeed -= .2f;
 	}
 
 	// Update is called once per frame
@@ -79,16 +83,22 @@ public class Player : MonoBehaviour {
 			// Cycle through "component" objects, check for Collider2D collisions
 			GameObject[] components = GameObject.FindGameObjectsWithTag ("component");
 			Collider2D playerCollider = this.GetComponent<Collider2D> ();
+			List<Collider2D> bodyParts = (from part in this.attachedComponents
+			                         where part.name == "bodyCell"
+									select part.GetComponentInChildren<Collider2D> () ).ToList<Collider2D>();
+			bodyParts.Add (playerCollider);
 			foreach (GameObject component in components) {
-				foreach (BoxCollider2D componentCollider in component.GetComponents<BoxCollider2D> ()) {
+				foreach (Collider2D componentCollider in component.GetComponentsInChildren<Collider2D> ()) {
 					if (!componentCollider.isTrigger) {
 						continue;
 					}
-					if (playerCollider.IsTouching (componentCollider)) {
-						component.SendMessage ("attach", this.gameObject);
-						this.attachedComponents.Add (component);
-						component.transform.SetParent (this.transform);
-						break;
+					foreach (Collider2D bodyCollider in bodyParts) {
+						if (bodyCollider.IsTouching (componentCollider)) {
+							component.SendMessage ("attach", this.gameObject);
+							this.attachedComponents.Add (component);
+							component.transform.SetParent (this.transform);
+							break;
+						}
 					}
 				}
 			}

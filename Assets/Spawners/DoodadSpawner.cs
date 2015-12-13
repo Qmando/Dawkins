@@ -6,6 +6,7 @@ public class DoodadSpawner : MonoBehaviour
 {
 	/// The current Player the Spawner is spawning creatures for
 	public GameObject player { get; set; }
+	public string doodadTag = "component";
 
 	public float SpawnRadius = 40.0f;
 	// The max bounds of the spawning area
@@ -26,7 +27,7 @@ public class DoodadSpawner : MonoBehaviour
 
 	GameObject CreateCreature(bool avoidNearby = true) {
 		var creature = Instantiate (InstanceTypes [Random.Range(0,InstanceTypes.Length)]);
-		creature.tag = "component";
+		creature.tag = doodadTag;
 		creature.transform.Rotate (Vector3.forward, UnityEngine.Random.value  * 360);
 		creature.transform.position = player.transform.position + genOffset (avoidNearby);
 		return creature;
@@ -48,12 +49,12 @@ public class DoodadSpawner : MonoBehaviour
 			CreateCreature (false);
 
 		while (true) {
-			for (int i = GameObject.FindGameObjectsWithTag ("component").Length; i < Density; i++)
+			for (int i = GameObject.FindGameObjectsWithTag (doodadTag).Length; i < Density; i++)
 				CreateCreature ();
 
 			var to_delete =
-				from x in GameObject.FindGameObjectsWithTag ("component")
-				where Vector3.Distance (x.transform.position, player.transform.position) > 15
+				from x in GameObject.FindGameObjectsWithTag (doodadTag)
+				where Vector3.Distance (x.transform.position, player.transform.position) > this.SpawnRadius
 				select x;
 
 			foreach (var x in to_delete)

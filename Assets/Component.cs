@@ -2,10 +2,13 @@
 using System.Collections;
 
 public class Component : MonoBehaviour {
-	protected GameObject attachedTo = null;
+	public GameObject attachedTo = null;
 	protected bool isAttached = false;
 	protected Vector3 attachOffset;
 	protected Animator anim;
+	protected bool meleeAttacking = false;
+	protected float attackSpeed = .5f;
+	protected float nextMeleeAttack = 0f;
 	// Use this for initialization
 	void Awake () {
 		// Turn off animation on spawn
@@ -16,6 +19,15 @@ public class Component : MonoBehaviour {
 	
 	// Update is called once per frame
 	public void Update () {
+		if (meleeAttacking && Time.time > nextMeleeAttack) {
+			nextMeleeAttack = Time.time + attackSpeed;
+			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("creature")) {
+				if (this.GetComponent<CircleCollider2D> ().IsTouching (enemy.GetComponent<Collider2D> ())) {
+					GameObject.Destroy (enemy);
+					attachedTo.SendMessage ("setscore");
+				}
+			}
+		}
 	}
 
 	void attach(GameObject player) {
