@@ -12,7 +12,7 @@ public class DoodadSpawner : MonoBehaviour
 	// The max bounds of the spawning area
 	public Rect SpawnArea { get; set; }
 	// The minimum distance to spawn from -- this prevents spawning too closely
-	public Rect SpawnClearArea { get; set; }
+	public Rect SpawnClearArea;
 
 	public int Density = 20;
 	public GameObject[] InstanceTypes;
@@ -23,6 +23,7 @@ public class DoodadSpawner : MonoBehaviour
 		var w = SpawnRadius;
 		SpawnArea = new Rect (-w / 2, -w / 2, w, w);
 		SpawnClearArea = new Rect (SpawnArea.xMin / 2, SpawnArea.yMin / 2, SpawnArea.width / 2, SpawnArea.height / 2);
+
 		player = GameObject.Find ("Cell");
 		StartCoroutine(dostuff());
 	}
@@ -36,6 +37,7 @@ public class DoodadSpawner : MonoBehaviour
 	}
 
 	Vector3 genOffset(bool avoidNearby) {
+		SpawnClearArea.center = player.transform.position;
 		Vector3 v = Vector3.zero;
 		do {
 			v = new Vector3 (
@@ -54,21 +56,27 @@ public class DoodadSpawner : MonoBehaviour
 				
 			int alive = 0;
 			GameObject[] allObjects = GameObject.FindGameObjectsWithTag (doodadTag);
-			foreach (GameObject obj in allObjects) {
-				if (obj.layer != 8 || !RespawnOnAttach) {
-					alive += 1;
+			foreach (GameObject doodadType in InstanceTypes){
+				foreach (GameObject obj in allObjects) {
+					if (obj.name.Contains (doodadType.name)) {
+						if (obj.layer != 8 || !RespawnOnAttach) {
+							alive += 1;
+						}
+					}
 				}
 			}
 			for (int i = alive; i < Density; i++)
 				CreateCreature ();
 
-			var to_delete =
-				from x in GameObject.FindGameObjectsWithTag (doodadTag)
-				where Vector3.Distance (x.transform.position, player.transform.position) > this.SpawnRadius
-				select x;
+			foreach (GameObject doodadType in InstanceTypes){
+				var to_delete =
+					from x in GameObject.FindGameObjectsWithTag(this.doodadTag)
+						where Vector3.Distance (x.transform.position, player.transform.position) > this.SpawnRadius && transform.gameObject.layer != 8 && x.gameObject.name.Contains(doodadType.name)
+					select x;
 
-			foreach (var x in to_delete)
-				GameObject.Destroy (x);
+				foreach (var x in to_delete)
+					GameObject.Destroy (x);
+			}
 
 			yield return 0;
 		}

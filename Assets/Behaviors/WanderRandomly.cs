@@ -5,29 +5,45 @@ using System.Collections;
 public class WanderRandomly : MonoBehaviour
 {
 	public float maxVelocity = 1.0f;
-	public float StepDistance = 10.0f; 
+	public float StepDistance = 20.0f; 
 	public float MaxTurnAngle = 60.0f; 
 	public bool randomDistance = true;
+	public float MaxDistance = 60f;
 
 	public IEnumerator Start() { 
 		var cur = transform.position;
 
+
 		while (true) { 
+			cur = transform.position;
+			Vector3 cellPos = GameObject.Find("Cell").transform.position;
 			// infinite loop : keep setting a new goal StepDistance away from current position
-			var initialDirection = new Vector3 (Random.value, Random.value, 0);
+			Vector3 initialDirection;
+			Debug.Log (Vector3.Distance (cur, cellPos));
+			// Chance to attack!
+			if (Random.value < .2f) {
+				initialDirection = cellPos - cur;
+			}
+			else {
+				initialDirection = new Vector3 (Random.value, Random.value, 0);
+			}
 			float distance = StepDistance;
 			if (randomDistance) {
-				distance = Random.value * StepDistance;
+				distance = (Random.value + .5f) * StepDistance;
 			}
-			var goal = cur + distance * initialDirection;
+			var goal = GameObject.Find("Cell").transform.position + distance * initialDirection;
+
+			var nextSwitch = Time.time + distance;
 
 			// pause for a bit to simulate decisionmaking at each step	
 			yield return new WaitForSeconds (0.3f);
 
-			// every frame, incrementally move towards current goal until 'close enough'
-			while (Vector3.Distance (cur, goal) > 0.01f) { 
+			// every frame, incrementally move towards current goal for period of time
+			while (Time.time < nextSwitch) { 
 
-				// rotate current orientation to point towards goal
+				// rotate current orientation to point towards goal 
+
+
 				var dir = Vector3.RotateTowards(transform.up, initialDirection, Time.deltaTime, 0.0f);
 				// transform.rotation = Quaternion.LookRotation (initialDirection);
 				var angle = Vector3.Angle(transform.up, dir);
