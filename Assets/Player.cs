@@ -39,7 +39,7 @@ public class Player : MonoBehaviour {
 		} else if (angle < -180) {
 			angle = angle + 360;
 		}
-		if (!(angle > 145 || angle < -145f)) {
+		if (!(angle > 145 || angle < -145f || mouse.magnitude < 80)) {
 			if (angle < 0) {
 				angle = Mathf.Min (angle, 5f);
 			} else {
