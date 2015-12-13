@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Player : MonoBehaviour {
+	
+	public float size = 1.0f;
+	public const float SIZE_CONST = 0.1f;
+
 	public Transform body;
 	public float speed;
 	private List<GameObject> attachedComponents = new List<GameObject>();
@@ -59,6 +63,8 @@ public class Player : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
+		body.transform.localScale.Set (size, size, size);
 		Move ();
 
 		// Left click, attach component
@@ -74,6 +80,13 @@ public class Player : MonoBehaviour {
 				}
 			}
 		}
+	}
 
+	void Consume(GameObject enemy) { 
+		this.size += SIZE_CONST;
+	}
+
+	public void OnCollisionEnter(Collision col) { 
+		Debug.LogError (col);
 	}
 }
