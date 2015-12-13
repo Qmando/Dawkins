@@ -19,7 +19,15 @@ public class Player : MonoBehaviour {
 	}
 
 	void Move () {
-		body.transform.Translate (mouseOffset () * speed * Time.deltaTime);
+		body.transform.Translate (mouseOffset () * speed / 200f * Time.deltaTime);
+	}
+
+	void addSpeed() {
+		this.speed *= 1.2f;
+	}
+
+	void decreaseSpeed() {
+		this.speed /= 1.2f;
 	}
 
 	// Update is called once per frame

@@ -29,10 +29,12 @@ public class Component : MonoBehaviour {
 			Vector2 dir = new Vector2 (Mathf.Cos (zRot), Mathf.Sin (zRot));
 			Vector3 heading = new Vector2 (movement.x, movement.y).normalized;
 			float offset = Vector3.Dot (heading, dir);
-			if (offset > .5) {
+			if (offset > .5 && !anim.enabled) {
 				anim.enabled = true;
-			} else {
+				attachedTo.SendMessage ("addSpeed");
+			} else if (offset < .5 && anim.enabled) {
 				anim.enabled = false;
+				attachedTo.SendMessage ("decreaseSpeed");
 			}
 		}
 	}
