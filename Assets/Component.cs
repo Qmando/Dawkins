@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Component : MonoBehaviour {
 	public GameObject attachedTo = null;
-	protected bool isAttached = false;
+	public bool isAttached = false;
 	protected Vector3 attachOffset;
 	protected Animator anim;
 	protected bool meleeAttacking = false;

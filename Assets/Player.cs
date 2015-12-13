@@ -12,9 +12,11 @@ public class Player : MonoBehaviour {
 	public float speed;
 	public float rotateSpeed;
 	private List<GameObject> attachedComponents = new List<GameObject>();
+	public GameObject startingMouth; 
 
 	// Use this for initialization
 	void Start () {
+		attachedComponents.Add (startingMouth);
 
 	}
 
@@ -84,7 +86,7 @@ public class Player : MonoBehaviour {
 			var colliders = 
 				from component in GameObject.FindGameObjectsWithTag ("component")
 				from collider in component.GetComponentsInChildren<Collider2D> ()
-				where collider.isTrigger
+				where collider.isTrigger && !this.attachedComponents.Contains(component)
 				select new { Object = component, Collider = collider};
 
 			var bodyParts = 

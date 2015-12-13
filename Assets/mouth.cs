@@ -22,9 +22,7 @@ public class mouth : Component {
 			}
 		}
 
-		this.transform.RotateAround (this.transform.position,
-			Vector3.forward,
-			1 * Time.deltaTime);
+	
 	}
 
 	public override void attach (GameObject player)
