@@ -13,6 +13,8 @@ public class Player : MonoBehaviour {
 	public float rotateSpeed;
 	private List<GameObject> attachedComponents = new List<GameObject>();
 	public GameObject startingMouth; 
+	public float rotateDistance = 200f; // The distance from center at which you stop rotating and move absolute
+	public float walkSpeed = 200f; // The speed you move when not rotating
 
 	// Use this for initialization
 	void Start () {
@@ -29,10 +31,10 @@ public class Player : MonoBehaviour {
 	void Move () {
 		Vector2 mouse = mouseOffset();
 		float addedSpeed = 0f;
-		if (mouse.magnitude > 15 && mouse.magnitude < 150) {
-			addedSpeed = 120f;
+		if (mouse.magnitude > 15 && mouse.magnitude < rotateDistance) {
+			addedSpeed = walkSpeed;
 		}
-		body.transform.Translate (((mouse.normalized * addedSpeed) + mouse) * speed / 200f * Time.deltaTime, Space.World);
+		body.transform.Translate (((mouse.normalized * addedSpeed) + mouse) * speed * size / 200f * Time.deltaTime, Space.World);
 
 		// If mouse is away from center
 
@@ -48,7 +50,7 @@ public class Player : MonoBehaviour {
 		} else if (angle < -180) {
 			angle = angle + 360;
 		}
-		if (!(angle > 145 || angle < -145f || mouse.magnitude < 150)) {
+		if (!(angle > 165 || angle < -165f || mouse.magnitude < rotateDistance)) {
 			if (angle < 0) {
 				angle = Mathf.Min (angle, 5f);
 			} else {
@@ -77,7 +79,8 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		body.transform.localScale.Set (size, size, size);
+		transform.localScale = new Vector3(size, size, size);
+
 		Move ();
 
 		// Left click, attach component
@@ -113,6 +116,11 @@ public class Player : MonoBehaviour {
 
 	void Consume(GameObject enemy) { 
 		this.size += SIZE_CONST;
+		GameObject.Find ("Camera").SendMessage ("zoomOut");
+	}
+
+	void killed(GameObject victim) {
+		Consume(victim);
 	}
 
 	public void OnCollisionEnter(Collision col) { 

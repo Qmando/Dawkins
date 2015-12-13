@@ -10,12 +10,6 @@ public class bodycell : Component {
 		base.attach (x);
 	}
 
-	void addSpeed () {
-		this.attachedTo.SendMessage ("addSpeed");
-	}
 
-	void decreaseSpeed () {
-		this.attachedTo.SendMessage ("decreaseSpeed");
-	}
 		
 }

@@ -27,6 +27,7 @@ public class Component : MonoBehaviour {
 			nextMeleeAttack = Time.time + attackSpeed;
 			foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("creature")) {
 				if (this.GetComponent<CircleCollider2D> ().IsTouching (enemy.GetComponent<Collider2D> ())) {
+					this.transform.parent.SendMessageUpwards ("killed", enemy);
 					GameObject.Destroy (enemy);
 					eventObj.SendMessage ("setscore");
 				}

@@ -7,6 +7,7 @@ public class WanderRandomly : MonoBehaviour
 	public float maxVelocity = 1.0f;
 	public float StepDistance = 10.0f; 
 	public float MaxTurnAngle = 60.0f; 
+	public bool randomDistance = true;
 
 	public IEnumerator Start() { 
 		var cur = transform.position;
@@ -14,7 +15,11 @@ public class WanderRandomly : MonoBehaviour
 		while (true) { 
 			// infinite loop : keep setting a new goal StepDistance away from current position
 			var initialDirection = new Vector3 (Random.value, Random.value, 0);
-			var goal = cur + StepDistance * initialDirection;
+			float distance = StepDistance;
+			if (randomDistance) {
+				distance = Random.value * StepDistance;
+			}
+			var goal = cur + distance * initialDirection;
 
 			// pause for a bit to simulate decisionmaking at each step	
 			yield return new WaitForSeconds (0.3f);

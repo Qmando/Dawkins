@@ -51,6 +51,7 @@ public class DoodadSpawner : MonoBehaviour
 			CreateCreature (false);
 
 		while (true) {
+				
 			int alive = 0;
 			GameObject[] allObjects = GameObject.FindGameObjectsWithTag (doodadTag);
 			foreach (GameObject obj in allObjects) {

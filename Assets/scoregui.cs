@@ -6,7 +6,7 @@ public class scoregui : MonoBehaviour {
 	public GameObject cell;
 
 	string genTopText(int score){
-		string text = "KILLS -";
+		string text = "Kills: ";
 		string score_str = score.ToString ();
 		text += score_str;
 		return text;

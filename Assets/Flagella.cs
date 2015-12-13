@@ -25,10 +25,10 @@ public class Flagella : Component {
 			float offset = Vector3.Dot (heading, dir);
 			if (offset > .5 && !anim.enabled) {
 				anim.enabled = true;
-				attachedTo.SendMessage ("addSpeed");
+				attachedTo.SendMessageUpwards ("addSpeed");
 			} else if (offset < .5 && anim.enabled) {
 				anim.enabled = false;
-				attachedTo.SendMessage ("decreaseSpeed");
+				attachedTo.SendMessageUpwards ("decreaseSpeed");
 			}
 		}
 

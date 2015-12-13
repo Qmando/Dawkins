@@ -14,6 +14,6 @@ public class CameraControl : MonoBehaviour {
 	}
 
 	void zoomOut() {
-		this.GetComponent<Camera> ().orthographicSize += 2;
+		this.GetComponent<Camera> ().orthographicSize += 1;
 	}
 }
