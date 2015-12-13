@@ -23,10 +23,15 @@ public class Player : MonoBehaviour {
 	}
 
 	void Move () {
-		body.transform.Translate (mouseOffset () * speed / 200f * Time.deltaTime, Space.World);
+		Vector2 mouse = mouseOffset();
+		float addedSpeed = 0f;
+		if (mouse.magnitude > 15 && mouse.magnitude < 150) {
+			addedSpeed = 120f;
+		}
+		body.transform.Translate (((mouse.normalized * addedSpeed) + mouse) * speed / 200f * Time.deltaTime, Space.World);
 
 		// If mouse is away from center
-		Vector2 mouse = mouseOffset();
+
 	
 		float angle = Vector2.Angle (Vector2.right, mouseOffset ().normalized);
 		if (mouse.y < 0) {
@@ -39,7 +44,7 @@ public class Player : MonoBehaviour {
 		} else if (angle < -180) {
 			angle = angle + 360;
 		}
-		if (!(angle > 145 || angle < -145f || mouse.magnitude < 80)) {
+		if (!(angle > 145 || angle < -145f || mouse.magnitude < 150)) {
 			if (angle < 0) {
 				angle = Mathf.Min (angle, 5f);
 			} else {
@@ -75,11 +80,16 @@ public class Player : MonoBehaviour {
 			GameObject[] components = GameObject.FindGameObjectsWithTag ("component");
 			Collider2D playerCollider = this.GetComponent<Collider2D> ();
 			foreach (GameObject component in components) {
-				Collider2D componentCollider = component.GetComponent<Collider2D> ();
-				if (playerCollider.IsTouching (componentCollider)) {
-					component.SendMessage ("attach", this.gameObject);
-					this.attachedComponents.Add (component);
-					component.transform.SetParent (this.transform);
+				foreach (BoxCollider2D componentCollider in component.GetComponents<BoxCollider2D> ()) {
+					if (!componentCollider.isTrigger) {
+						continue;
+					}
+					if (playerCollider.IsTouching (componentCollider)) {
+						component.SendMessage ("attach", this.gameObject);
+						this.attachedComponents.Add (component);
+						component.transform.SetParent (this.transform);
+						break;
+					}
 				}
 			}
 		}
